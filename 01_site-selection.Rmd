@@ -1,0 +1,72 @@
+---
+editor_options:
+  chunk_output_type: console
+---
+
+# Site selection  
+
+The aim of this script is to provide .geojson files to Planet to obtain access to high-resolution satellite data for the Nilgiris, Anamalais and parts of Sathyamangalam Tiger Reserve.  
+
+## Load necessary libraries
+```{r}
+library(sf)
+library(tidyverse)
+library(mapview)
+library(mapedit)
+library(purrr)
+library(terra)
+library(spatstat.random)
+
+# for plotting
+library(viridis)
+library(colorspace)
+library(scales)
+library(ggplot2)
+library(patchwork)
+library(fastmap)
+```
+
+
+## Load the Western Ghats outline and edit it interactively
+
+```{r}
+wg <- st_read("data/spatial/WG.shp")
+wg <- st_make_valid(wg)
+
+# create bounding box/polygon interactively for the region of interest
+# for the sake of this exercise, we created a bounding box that is larger than the total area required for sampling
+
+# Run the following two lines if you haven't previously executed the same
+
+bbox <- mapview(wg) %>%
+ editMap()
+
+# check if overall area is <15,000 sq.km
+st_area(bbox$finished)/ 1000000
+
+# create files for exporting
+roi <- st_as_sf(bbox$finished) %>%
+  `st_crs<-`(4326)
+
+# exporting
+st_write(roi, "data/spatial/nilgiris_anamalais.json",
+         driver = "GeoJSON")
+```
+
+## Creating an interactive file to view the region of interest
+
+```{r}
+# to save this to a file 
+# if you would like to share this with collaborators/colleagues
+
+html_fl <- tempfile(tmpdir = getwd(), fileext = "interactive-visualization.html")
+
+view <- mapview(wg, col.regions = "gray") +
+  mapview(roi, col.regions = "red")
+
+# create standalone .html
+mapview::mapshot(view, url = html_fl)
+```
+
+<iframe src="interactive-visualization.html" height="600px" width="100%" style="border:none;"></iframe>
+
