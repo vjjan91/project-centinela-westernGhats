@@ -66,6 +66,8 @@ view <- mapview(wg, col.regions = "gray") +
 
 # create standalone .html
 mapview::mapshot(view, url = html_fl)
+
+view
 ```
 
 <iframe src="interactive-visualization.html" height="600px" width="100%" style="border:none;"></iframe>
