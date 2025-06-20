@@ -5,7 +5,7 @@ editor_options:
 
 # Site selection  
 
-The aim of this script is to provide .geojson files to Planet to obtain access to high-resolution satellite data for the Nilgiris, Anamalais and parts of Sathyamangalam Tiger Reserve.  
+The aim of this script is to provide .geojson files to Planet to obtain access to high-resolution satellite data for the Western Ghats
 
 ## Load necessary libraries
 ```{r}

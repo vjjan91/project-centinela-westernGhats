@@ -7,6 +7,10 @@ author:
     - T R Shankar Raman
     - Anita Varghese
     - Vandana Kannan
+    - VV Robin
+    - Anand Osuri
+    - Rohit Naniwadekar
+    - Arundhati Das
     - Amy Rosenthal
     - Seamus Lombardo
 date: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
