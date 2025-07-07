@@ -155,7 +155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="site-selection.html"><a href="site-selection.html"><i class="fa fa-check"></i><b>2</b> Site selection</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="site-selection.html"><a href="site-selection.html#load-necessary-libraries"><i class="fa fa-check"></i><b>2.1</b> Load necessary libraries</a></li>
-<li class="chapter" data-level="2.2" data-path="site-selection.html"><a href="site-selection.html#load-the-western-ghats-outline-and-edit-it-interactively"><i class="fa fa-check"></i><b>2.2</b> Load the Western Ghats outline and edit it interactively</a></li>
+<li class="chapter" data-level="2.2" data-path="site-selection.html"><a href="site-selection.html#load-the-western-ghats-outline-and-edit-it-interactively-to-draw-bounding-boxes-for-the-nilgiris-and-the-anamalais"><i class="fa fa-check"></i><b>2.2</b> Load the Western Ghats outline and edit it interactively to draw bounding boxes for the Nilgiris and the Anamalais</a></li>
 <li class="chapter" data-level="2.3" data-path="site-selection.html"><a href="site-selection.html#creating-an-interactive-file-to-view-the-region-of-interest"><i class="fa fa-check"></i><b>2.3</b> Creating an interactive file to view the region of interest</a></li>
 </ul></li>
 </ul>
@@ -196,8 +196,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-14"><a href="site-selection.html#cb1-14" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb1-15"><a href="site-selection.html#cb1-15" tabindex="-1"></a><span class="fu">library</span>(fastmap)</span></code></pre></div>
 </div>
-<div id="load-the-western-ghats-outline-and-edit-it-interactively" class="section level2 hasAnchor" number="2.2">
-<h2><span class="header-section-number">2.2</span> Load the Western Ghats outline and edit it interactively<a href="site-selection.html#load-the-western-ghats-outline-and-edit-it-interactively" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="load-the-western-ghats-outline-and-edit-it-interactively-to-draw-bounding-boxes-for-the-nilgiris-and-the-anamalais" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Load the Western Ghats outline and edit it interactively to draw bounding boxes for the Nilgiris and the Anamalais<a href="site-selection.html#load-the-western-ghats-outline-and-edit-it-interactively-to-draw-bounding-boxes-for-the-nilgiris-and-the-anamalais" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="site-selection.html#cb2-1" tabindex="-1"></a>wg <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/WG.shp&quot;</span>)</span>
 <span id="cb2-2"><a href="site-selection.html#cb2-2" tabindex="-1"></a>wg <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(wg)</span>
 <span id="cb2-3"><a href="site-selection.html#cb2-3" tabindex="-1"></a></span>
@@ -216,9 +216,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-16"><a href="site-selection.html#cb2-16" tabindex="-1"></a>roi <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(bbox<span class="sc">$</span>finished) <span class="sc">%&gt;%</span></span>
 <span id="cb2-17"><a href="site-selection.html#cb2-17" tabindex="-1"></a>  <span class="st">`</span><span class="at">st_crs&lt;-</span><span class="st">`</span>(<span class="dv">4326</span>)</span>
 <span id="cb2-18"><a href="site-selection.html#cb2-18" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="site-selection.html#cb2-19" tabindex="-1"></a><span class="co"># exporting</span></span>
-<span id="cb2-20"><a href="site-selection.html#cb2-20" tabindex="-1"></a><span class="fu">st_write</span>(roi, <span class="st">&quot;data/spatial/nilgiris_anamalais.json&quot;</span>,</span>
-<span id="cb2-21"><a href="site-selection.html#cb2-21" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;GeoJSON&quot;</span>)</span></code></pre></div>
+<span id="cb2-19"><a href="site-selection.html#cb2-19" tabindex="-1"></a><span class="co"># including shapefiles for central and northern Western Ghats</span></span>
+<span id="cb2-20"><a href="site-selection.html#cb2-20" tabindex="-1"></a><span class="fu">mapviewOptions</span>(<span class="at">fgb =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-21"><a href="site-selection.html#cb2-21" tabindex="-1"></a>dodamarg <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/dodamarg.shp&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-22"><a href="site-selection.html#cb2-22" tabindex="-1"></a>  <span class="fu">st_zm</span>(., <span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">&quot;ZM&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-23"><a href="site-selection.html#cb2-23" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
+<span id="cb2-24"><a href="site-selection.html#cb2-24" tabindex="-1"></a>kadamane <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/kadamane.shp&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-25"><a href="site-selection.html#cb2-25" tabindex="-1"></a>  <span class="fu">st_zm</span>(., <span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">&quot;ZM&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-26"><a href="site-selection.html#cb2-26" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
+<span id="cb2-27"><a href="site-selection.html#cb2-27" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="site-selection.html#cb2-28" tabindex="-1"></a><span class="co"># combining the shapefiles</span></span>
+<span id="cb2-29"><a href="site-selection.html#cb2-29" tabindex="-1"></a>combined_shp <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(roi, dodamarg, kadamane) <span class="sc">%&gt;%</span></span>
+<span id="cb2-30"><a href="site-selection.html#cb2-30" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(geometry))</span>
+<span id="cb2-31"><a href="site-selection.html#cb2-31" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="site-selection.html#cb2-32" tabindex="-1"></a><span class="co"># check if overall area is &lt;15,000 sq.km</span></span>
+<span id="cb2-33"><a href="site-selection.html#cb2-33" tabindex="-1"></a><span class="fu">st_area</span>(combined_shp)<span class="sc">/</span> <span class="dv">1000000</span></span>
+<span id="cb2-34"><a href="site-selection.html#cb2-34" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="site-selection.html#cb2-35" tabindex="-1"></a><span class="co"># export</span></span>
+<span id="cb2-36"><a href="site-selection.html#cb2-36" tabindex="-1"></a><span class="fu">st_write</span>(combined_shp, <span class="st">&quot;data/spatial/western_ghats.json&quot;</span>,</span>
+<span id="cb2-37"><a href="site-selection.html#cb2-37" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;GeoJSON&quot;</span>)</span></code></pre></div>
 </div>
 <div id="creating-an-interactive-file-to-view-the-region-of-interest" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Creating an interactive file to view the region of interest<a href="site-selection.html#creating-an-interactive-file-to-view-the-region-of-interest" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -228,7 +244,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-4"><a href="site-selection.html#cb3-4" tabindex="-1"></a>html_fl <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">tmpdir =</span> <span class="fu">getwd</span>(), <span class="at">fileext =</span> <span class="st">&quot;interactive-visualization.html&quot;</span>)</span>
 <span id="cb3-5"><a href="site-selection.html#cb3-5" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="site-selection.html#cb3-6" tabindex="-1"></a>view <span class="ot">&lt;-</span> <span class="fu">mapview</span>(wg, <span class="at">col.regions =</span> <span class="st">&quot;gray&quot;</span>) <span class="sc">+</span></span>
-<span id="cb3-7"><a href="site-selection.html#cb3-7" tabindex="-1"></a>  <span class="fu">mapview</span>(roi, <span class="at">col.regions =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb3-7"><a href="site-selection.html#cb3-7" tabindex="-1"></a>  <span class="fu">mapview</span>(combined_shp, <span class="at">col.regions =</span> <span class="st">&quot;red&quot;</span>)</span>
 <span id="cb3-8"><a href="site-selection.html#cb3-8" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="site-selection.html#cb3-9" tabindex="-1"></a><span class="co"># create standalone .html</span></span>
 <span id="cb3-10"><a href="site-selection.html#cb3-10" tabindex="-1"></a>mapview<span class="sc">::</span><span class="fu">mapshot</span>(view, <span class="at">url =</span> html_fl)</span>

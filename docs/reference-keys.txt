@@ -4,5 +4,5 @@ data-access
 data-processing
 site-selection
 load-necessary-libraries
-load-the-western-ghats-outline-and-edit-it-interactively
+load-the-western-ghats-outline-and-edit-it-interactively-to-draw-bounding-boxes-for-the-nilgiris-and-the-anamalais
 creating-an-interactive-file-to-view-the-region-of-interest
