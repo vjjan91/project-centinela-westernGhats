@@ -27,7 +27,7 @@ library(fastmap)
 ```
 
 
-## Load the Western Ghats outline and edit it interactively
+## Load the Western Ghats outline and edit it interactively to draw bounding boxes for the Nilgiris and the Anamalais
 
 ```{r}
 wg <- st_read("data/spatial/WG.shp")
@@ -48,8 +48,24 @@ st_area(bbox$finished)/ 1000000
 roi <- st_as_sf(bbox$finished) %>%
   `st_crs<-`(4326)
 
-# exporting
-st_write(roi, "data/spatial/nilgiris_anamalais.json",
+# including shapefiles for central and northern Western Ghats
+mapviewOptions(fgb = FALSE)
+dodamarg <- st_read("data/spatial/dodamarg.shp") %>%
+  st_zm(., drop = TRUE, what = "ZM") %>%
+  st_make_valid()
+kadamane <- st_read("data/spatial/kadamane.shp") %>%
+  st_zm(., drop = TRUE, what = "ZM") %>%
+  st_make_valid()
+
+# combining the shapefiles
+combined_shp <- bind_rows(roi, dodamarg, kadamane) %>%
+  filter(!is.na(geometry))
+
+# check if overall area is <15,000 sq.km
+st_area(combined_shp)/ 1000000
+
+# export
+st_write(combined_shp, "data/spatial/western_ghats.json",
          driver = "GeoJSON")
 ```
 
@@ -62,7 +78,7 @@ st_write(roi, "data/spatial/nilgiris_anamalais.json",
 html_fl <- tempfile(tmpdir = getwd(), fileext = "interactive-visualization.html")
 
 view <- mapview(wg, col.regions = "gray") +
-  mapview(roi, col.regions = "red")
+  mapview(combined_shp, col.regions = "red")
 
 # create standalone .html
 mapview::mapshot(view, url = html_fl)
