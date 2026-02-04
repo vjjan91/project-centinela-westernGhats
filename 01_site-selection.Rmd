@@ -37,8 +37,10 @@ wg <- st_make_valid(wg)
 # for the sake of this exercise, we created a bounding box that is larger than the total area required for sampling
 
 # Run the following two lines if you haven't previously executed the same
+str <- st_read("data/spatial/STR_boundaries.shp") 
+#(including str boundary to assess areas needed)
 
-bbox <- mapview(wg) %>%
+bbox <- mapview(str) %>%
  editMap()
 
 # check if overall area is <15,000 sq.km
@@ -53,16 +55,19 @@ mapviewOptions(fgb = FALSE)
 dodamarg <- st_read("data/spatial/dodamarg.shp") %>%
   st_zm(., drop = TRUE, what = "ZM") %>%
   st_make_valid()
-kadamane <- st_read("data/spatial/kadamane.shp") %>%
+dodamarg$feature_type <- "polygon"
+
+# note: the revised kadamane .json contains updated requests from NCF for Anamalais (pick only the 4th row as the rest contains older information)
+kadamane <- st_read("data/spatial/western_ghats.json") %>%
   st_zm(., drop = TRUE, what = "ZM") %>%
   st_make_valid()
 
-# combining the shapefiles
-combined_shp <- bind_rows(roi, dodamarg, kadamane) %>%
+# combining the shapefiles (combine specific rows)
+combined_shp <- bind_rows(roi[,2:3], dodamarg[,c(12,13)], kadamane[4,c(2,14)]) %>%
   filter(!is.na(geometry))
 
-# check if overall area is <15,000 sq.km
-st_area(combined_shp)/ 1000000
+# check if overall area is <15,000 sq.km (total ~14,460)
+sum(st_area(combined_shp)/ 1000000)
 
 # export
 st_write(combined_shp, "data/spatial/western_ghats.json",
