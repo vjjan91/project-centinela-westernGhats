@@ -36,11 +36,13 @@ wg <- st_make_valid(wg)
 # create bounding box/polygon interactively for the region of interest
 # for the sake of this exercise, we created a bounding box that is larger than the total area required for sampling
 
-# Run the following two lines if you haven't previously executed the same
+# Including requests from keystone and ncf for nilgiris and anamalais
 str <- st_read("data/spatial/STR_boundaries.shp") 
-#(including str boundary to assess areas needed)
+atr <- st_read("data/spatial/ATR Outer boundary.geojson")
 
-bbox <- mapview(str) %>%
+area_for_editing <- mapview(str) + mapview(atr)
+
+bbox <- area_for_editing %>%
  editMap()
 
 # check if overall area is <15,000 sq.km
@@ -57,8 +59,8 @@ dodamarg <- st_read("data/spatial/dodamarg.shp") %>%
   st_make_valid()
 dodamarg$feature_type <- "polygon"
 
-# note: the revised kadamane .json contains updated requests from NCF for Anamalais (pick only the 4th row as the rest contains older information)
-kadamane <- st_read("data/spatial/western_ghats.json") %>%
+# kadamane 
+kadamane <- st_read("data/spatial/kadamane.geojson") %>%
   st_zm(., drop = TRUE, what = "ZM") %>%
   st_make_valid()
 
