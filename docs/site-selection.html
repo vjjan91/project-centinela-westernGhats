@@ -212,42 +212,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-4"><a href="site-selection.html#cb2-4" tabindex="-1"></a><span class="co"># create bounding box/polygon interactively for the region of interest</span></span>
 <span id="cb2-5"><a href="site-selection.html#cb2-5" tabindex="-1"></a><span class="co"># for the sake of this exercise, we created a bounding box that is larger than the total area required for sampling</span></span>
 <span id="cb2-6"><a href="site-selection.html#cb2-6" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="site-selection.html#cb2-7" tabindex="-1"></a><span class="co"># Run the following two lines if you haven&#39;t previously executed the same</span></span>
+<span id="cb2-7"><a href="site-selection.html#cb2-7" tabindex="-1"></a><span class="co"># Including requests from keystone and ncf for nilgiris and anamalais</span></span>
 <span id="cb2-8"><a href="site-selection.html#cb2-8" tabindex="-1"></a>str <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/STR_boundaries.shp&quot;</span>) </span>
-<span id="cb2-9"><a href="site-selection.html#cb2-9" tabindex="-1"></a><span class="co">#(including str boundary to assess areas needed)</span></span>
+<span id="cb2-9"><a href="site-selection.html#cb2-9" tabindex="-1"></a>atr <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/ATR Outer boundary.geojson&quot;</span>)</span>
 <span id="cb2-10"><a href="site-selection.html#cb2-10" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="site-selection.html#cb2-11" tabindex="-1"></a>bbox <span class="ot">&lt;-</span> <span class="fu">mapview</span>(str) <span class="sc">%&gt;%</span></span>
-<span id="cb2-12"><a href="site-selection.html#cb2-12" tabindex="-1"></a> <span class="fu">editMap</span>()</span>
-<span id="cb2-13"><a href="site-selection.html#cb2-13" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="site-selection.html#cb2-14" tabindex="-1"></a><span class="co"># check if overall area is &lt;15,000 sq.km</span></span>
-<span id="cb2-15"><a href="site-selection.html#cb2-15" tabindex="-1"></a><span class="fu">st_area</span>(bbox<span class="sc">$</span>finished)<span class="sc">/</span> <span class="dv">1000000</span></span>
-<span id="cb2-16"><a href="site-selection.html#cb2-16" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="site-selection.html#cb2-17" tabindex="-1"></a><span class="co"># create files for exporting</span></span>
-<span id="cb2-18"><a href="site-selection.html#cb2-18" tabindex="-1"></a>roi <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(bbox<span class="sc">$</span>finished) <span class="sc">%&gt;%</span></span>
-<span id="cb2-19"><a href="site-selection.html#cb2-19" tabindex="-1"></a>  <span class="st">`</span><span class="at">st_crs&lt;-</span><span class="st">`</span>(<span class="dv">4326</span>)</span>
-<span id="cb2-20"><a href="site-selection.html#cb2-20" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="site-selection.html#cb2-21" tabindex="-1"></a><span class="co"># including shapefiles for central and northern Western Ghats</span></span>
-<span id="cb2-22"><a href="site-selection.html#cb2-22" tabindex="-1"></a><span class="fu">mapviewOptions</span>(<span class="at">fgb =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-23"><a href="site-selection.html#cb2-23" tabindex="-1"></a>dodamarg <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/dodamarg.shp&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-24"><a href="site-selection.html#cb2-24" tabindex="-1"></a>  <span class="fu">st_zm</span>(., <span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">&quot;ZM&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-25"><a href="site-selection.html#cb2-25" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
-<span id="cb2-26"><a href="site-selection.html#cb2-26" tabindex="-1"></a>dodamarg<span class="sc">$</span>feature_type <span class="ot">&lt;-</span> <span class="st">&quot;polygon&quot;</span></span>
-<span id="cb2-27"><a href="site-selection.html#cb2-27" tabindex="-1"></a></span>
-<span id="cb2-28"><a href="site-selection.html#cb2-28" tabindex="-1"></a><span class="co"># note: the revised kadamane .json contains updated requests from NCF for Anamalais (pick only the 4th row as the rest contains older information)</span></span>
-<span id="cb2-29"><a href="site-selection.html#cb2-29" tabindex="-1"></a>kadamane <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/western_ghats.json&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-30"><a href="site-selection.html#cb2-30" tabindex="-1"></a>  <span class="fu">st_zm</span>(., <span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">&quot;ZM&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-31"><a href="site-selection.html#cb2-31" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
-<span id="cb2-32"><a href="site-selection.html#cb2-32" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="site-selection.html#cb2-33" tabindex="-1"></a><span class="co"># combining the shapefiles (combine specific rows)</span></span>
-<span id="cb2-34"><a href="site-selection.html#cb2-34" tabindex="-1"></a>combined_shp <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(roi[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>], dodamarg[,<span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">13</span>)], kadamane[<span class="dv">4</span>,<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">14</span>)]) <span class="sc">%&gt;%</span></span>
-<span id="cb2-35"><a href="site-selection.html#cb2-35" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(geometry))</span>
-<span id="cb2-36"><a href="site-selection.html#cb2-36" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="site-selection.html#cb2-37" tabindex="-1"></a><span class="co"># check if overall area is &lt;15,000 sq.km (total ~14,460)</span></span>
-<span id="cb2-38"><a href="site-selection.html#cb2-38" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">st_area</span>(combined_shp)<span class="sc">/</span> <span class="dv">1000000</span>)</span>
-<span id="cb2-39"><a href="site-selection.html#cb2-39" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="site-selection.html#cb2-40" tabindex="-1"></a><span class="co"># export</span></span>
-<span id="cb2-41"><a href="site-selection.html#cb2-41" tabindex="-1"></a><span class="fu">st_write</span>(combined_shp, <span class="st">&quot;data/spatial/western_ghats.json&quot;</span>,</span>
-<span id="cb2-42"><a href="site-selection.html#cb2-42" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;GeoJSON&quot;</span>)</span></code></pre></div>
+<span id="cb2-11"><a href="site-selection.html#cb2-11" tabindex="-1"></a>area_for_editing <span class="ot">&lt;-</span> <span class="fu">mapview</span>(str) <span class="sc">+</span> <span class="fu">mapview</span>(atr)</span>
+<span id="cb2-12"><a href="site-selection.html#cb2-12" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="site-selection.html#cb2-13" tabindex="-1"></a>bbox <span class="ot">&lt;-</span> area_for_editing <span class="sc">%&gt;%</span></span>
+<span id="cb2-14"><a href="site-selection.html#cb2-14" tabindex="-1"></a> <span class="fu">editMap</span>()</span>
+<span id="cb2-15"><a href="site-selection.html#cb2-15" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="site-selection.html#cb2-16" tabindex="-1"></a><span class="co"># check if overall area is &lt;15,000 sq.km</span></span>
+<span id="cb2-17"><a href="site-selection.html#cb2-17" tabindex="-1"></a><span class="fu">st_area</span>(bbox<span class="sc">$</span>finished)<span class="sc">/</span> <span class="dv">1000000</span></span>
+<span id="cb2-18"><a href="site-selection.html#cb2-18" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="site-selection.html#cb2-19" tabindex="-1"></a><span class="co"># create files for exporting</span></span>
+<span id="cb2-20"><a href="site-selection.html#cb2-20" tabindex="-1"></a>roi <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(bbox<span class="sc">$</span>finished) <span class="sc">%&gt;%</span></span>
+<span id="cb2-21"><a href="site-selection.html#cb2-21" tabindex="-1"></a>  <span class="st">`</span><span class="at">st_crs&lt;-</span><span class="st">`</span>(<span class="dv">4326</span>)</span>
+<span id="cb2-22"><a href="site-selection.html#cb2-22" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="site-selection.html#cb2-23" tabindex="-1"></a><span class="co"># including shapefiles for central and northern Western Ghats</span></span>
+<span id="cb2-24"><a href="site-selection.html#cb2-24" tabindex="-1"></a><span class="fu">mapviewOptions</span>(<span class="at">fgb =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-25"><a href="site-selection.html#cb2-25" tabindex="-1"></a>dodamarg <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/dodamarg.shp&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-26"><a href="site-selection.html#cb2-26" tabindex="-1"></a>  <span class="fu">st_zm</span>(., <span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">&quot;ZM&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-27"><a href="site-selection.html#cb2-27" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
+<span id="cb2-28"><a href="site-selection.html#cb2-28" tabindex="-1"></a>dodamarg<span class="sc">$</span>feature_type <span class="ot">&lt;-</span> <span class="st">&quot;polygon&quot;</span></span>
+<span id="cb2-29"><a href="site-selection.html#cb2-29" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="site-selection.html#cb2-30" tabindex="-1"></a><span class="co"># kadamane </span></span>
+<span id="cb2-31"><a href="site-selection.html#cb2-31" tabindex="-1"></a>kadamane <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/spatial/kadamane.geojson&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-32"><a href="site-selection.html#cb2-32" tabindex="-1"></a>  <span class="fu">st_zm</span>(., <span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">&quot;ZM&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-33"><a href="site-selection.html#cb2-33" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
+<span id="cb2-34"><a href="site-selection.html#cb2-34" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="site-selection.html#cb2-35" tabindex="-1"></a><span class="co"># combining the shapefiles (combine specific rows)</span></span>
+<span id="cb2-36"><a href="site-selection.html#cb2-36" tabindex="-1"></a>combined_shp <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(roi[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>], dodamarg[,<span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">13</span>)], kadamane[<span class="dv">4</span>,<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">14</span>)]) <span class="sc">%&gt;%</span></span>
+<span id="cb2-37"><a href="site-selection.html#cb2-37" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(geometry))</span>
+<span id="cb2-38"><a href="site-selection.html#cb2-38" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="site-selection.html#cb2-39" tabindex="-1"></a><span class="co"># check if overall area is &lt;15,000 sq.km (total ~14,460)</span></span>
+<span id="cb2-40"><a href="site-selection.html#cb2-40" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">st_area</span>(combined_shp)<span class="sc">/</span> <span class="dv">1000000</span>)</span>
+<span id="cb2-41"><a href="site-selection.html#cb2-41" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="site-selection.html#cb2-42" tabindex="-1"></a><span class="co"># export</span></span>
+<span id="cb2-43"><a href="site-selection.html#cb2-43" tabindex="-1"></a><span class="fu">st_write</span>(combined_shp, <span class="st">&quot;data/spatial/western_ghats.json&quot;</span>,</span>
+<span id="cb2-44"><a href="site-selection.html#cb2-44" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;GeoJSON&quot;</span>)</span></code></pre></div>
 </div>
 <div id="creating-an-interactive-file-to-view-the-region-of-interest" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Creating an interactive file to view the region of interest<a href="site-selection.html#creating-an-interactive-file-to-view-the-region-of-interest" class="anchor-section" aria-label="Anchor link to header"></a></h2>
